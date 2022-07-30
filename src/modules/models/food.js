@@ -20,7 +20,7 @@ export default function (sequelize) {
         allowNull: false,
         validate: {
           min: 1000,
-          max: 1000000 
+          max: 1000000
         }
       }
     },

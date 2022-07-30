@@ -1,8 +1,7 @@
 import Controller from "../controllers/user.js";
 
-const controller = new Controller()
-
 export default function (fastify, opts, done) {
+  const controller = new Controller()
 
   fastify.get('/', controller.GET)
   fastify.get('/:id', controller.GET)

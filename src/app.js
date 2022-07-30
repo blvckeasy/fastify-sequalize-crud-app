@@ -21,9 +21,9 @@ async function main() {
   })
   
   fastify.register(jsonParser)
-  fastify.register(userRouter, { prefix: '/api/users/' }) 
-  fastify.register(foodRouter, { prefix: '/api/foods/' })
-  fastify.register(orderRouter, { prefix: '/api/orders/' })
+  fastify.register(userRouter, { prefix: '/api/users' }) 
+  fastify.register(foodRouter, { prefix: '/api/foods' })
+  fastify.register(orderRouter, { prefix: '/api/orders' })
 
   fastify.listen({ port: config.server.port }, function (err, address) {
     if (err) {

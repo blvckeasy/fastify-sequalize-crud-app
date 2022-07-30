@@ -1,12 +1,13 @@
+import Controller from "../controllers/food.js"
+
 export default function (fastify, opts, done) {
+  const controller = new Controller();
 
-  fastify.get('/', (req, res) => {
-    return { foods: '/', method: req.method }
-  })
-
-  fastify.post('/', (req, res) => {
-    return { foods: '/', method: req.method }
-  })
+  fastify.get('/', controller.GET)
+  fastify.get('/:id', controller.GET)
+  fastify.post('/', controller.POST)
+  fastify.put('/:id', controller.PUT)
+  fastify.delete('/:id', controller.DELETE)
 
   done();
 }

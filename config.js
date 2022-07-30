@@ -11,12 +11,12 @@ const SERVER = {
 
 const PAGINATION = {
   page: 1,
-  limit: 2
+  limit: 5
 }
 
 const config = {
   server: SERVER,
-  pagintion: PAGINATION
+  pagination: PAGINATION
 }
 
 export default config
