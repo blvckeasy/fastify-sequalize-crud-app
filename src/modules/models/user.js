@@ -18,7 +18,7 @@ export default function (sequelize) {
         unique: true,
         allowNull: false,
         validate: {
-          is: ['^\\+998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$', 'g'],
+          is: ['^\\+998(9[012345789]|33)[0-9]{7}$', 'g'],
           len: {
             msg: "contact length must be 13!",
             args: 13

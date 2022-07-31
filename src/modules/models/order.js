@@ -11,6 +11,7 @@ export default function (sequelize) {
       },
       user_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
           model: 'users',
           key: 'id',
@@ -18,6 +19,7 @@ export default function (sequelize) {
       },
       food_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
           model: 'foods',
           key: 'id',
@@ -25,6 +27,7 @@ export default function (sequelize) {
       },
       count: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         validate: {
           min: 1,
         }

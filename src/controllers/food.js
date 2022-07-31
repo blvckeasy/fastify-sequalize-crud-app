@@ -1,19 +1,15 @@
-import config from '../../config.js'
+import config from '../config/config.js'
 
 class Controller {
   async GET(req, res) {
     try {
-      const { id } = req.params
       const foodModel = req.models.foods
       const pagination = config.pagination
       const { page, limit } = { page: req.query.page || pagination.page, limit: req.query.limit || pagination.limit }
-      if (id) {
-        const food = await foodModel.findOne({ where: { id } })
-        return res.send({ message: 'Ok', data: food || {} })
-      }
+      const foods = await foodModel.findAll({where: req.params, order: [["id", "ASC"]] })
+      const paginated_foods = foods.slice(page * limit - limit, page * limit)
 
-      const foods = await foodModel.findAll({ order: [["id", "ASC"]] })
-      return res.send({ message: 'Ok', data: foods.slice(page * limit - limit, page * limit) || [] })
+      return res.send({ message: 'food data successfully finded.', data: req.params.id ? (paginated_foods[0] || {}) : (paginated_foods || []) })
     } catch (err) {
       return res.send({ message: err.errors ? err.errors[0].message : err.message, data: {} })
     }
@@ -21,13 +17,10 @@ class Controller {
 
   async POST(req, res) {
     try {
-      if (!(req.body.name && req.body.price)) throw new Error("foodname and price is require!")
-      
       const foodModel = req.models.foods
-      const { name, price } = req.body
-      const new_food = await foodModel.create({ name, price })
+      const new_food = await foodModel.create(req.body)
 
-      return res.send({ message: 'food succesfully inserted.', data: new_food || {} })
+      return res.send({ message: 'food data successfully inserted.', data: new_food || {} })
     } catch (err) {
       return res.send({ message: err.errors ? err.errors[0].message : err.message, data: {} })
     }
@@ -35,13 +28,10 @@ class Controller {
 
   async PUT(req, res) {
     try {
-      if (!req.params.id) throw new Error("id is require!")
-
       const foodModel = req.models.foods
-      const { id } = req.params
-      const updated_food = await foodModel.update(req.body, { where: { id }, returning: true, plain: true })
+      const updated_food = await foodModel.update(req.body, { where: req.params, returning: true, plain: true })
       
-      return res.send({ message: "ok", data: updated_food[1] || {} })
+      return res.send({ message: "food data successfully updated.", data: updated_food[1] || {} })
     } catch (err) {
       return res.send({ message: err.errors ? err.errors[0].message : err.message, data: {} })
     }
@@ -49,14 +39,11 @@ class Controller {
 
   async DELETE(req, res) {
     try {
-      if (!req.params.id) throw new Error("id is require!")
-
       const foodModel = req.models.foods
-      const { id } = req.params  
-      const food = await foodModel.findOne({ where: { id } })
-      await foodModel.destroy({ where: { id } })
+      const food = await foodModel.findOne({ where: req.params })
+      await foodModel.destroy({ where: req.params })
 
-      return res.send({ message: "ok", data: food || {} })
+      return res.send({ message: "food data successfully deleted.", data: food || {} })
     } catch (err) {
       return res.send({ message: err.errors ? err.errors[0].message : err.message, data: {} })
     }

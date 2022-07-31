@@ -1,11 +1,12 @@
 import Fastify from 'fastify'
+import cors from '@fastify/cors'
 import jsonParser from 'fastify-xml-body-parser'
 import { dbConnection, sequelize } from './modules/sequelize.js'
 import mockDataFunction from './modules/mockdata.js'
 import orderRouter from './routes/order.js'
 import userRouter from './routes/user.js'
 import foodRouter from './routes/food.js'
-import config from '../config.js'
+import config from './config/config.js'
 
 const fastify = Fastify({
   logger: false,
@@ -14,6 +15,11 @@ const fastify = Fastify({
 async function main() {
   await dbConnection()
   await mockDataFunction(sequelize)
+
+  await fastify.register(cors, { 
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
 
   fastify.addHook('onRequest', (req, _, done) => {
     req.models = sequelize.models
